@@ -5,13 +5,23 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -28,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.encryptordecryptor.ui.theme.EncryptorDecryptorTheme
@@ -37,14 +48,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            EncryptorDecryptorTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            EncryptorDecryptorApp()
         }
     }
 }
@@ -92,7 +96,7 @@ fun EncryptionSelector(modifier: Modifier = Modifier) {
     val options = listOf("ROT13", "AES", "RAS")
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(8.dp)
+        modifier = modifier.padding(8.dp)
     ) {
         SingleChoiceSegmentedButtonRow {
             options.forEachIndexed { index, label ->
@@ -105,7 +109,7 @@ fun EncryptionSelector(modifier: Modifier = Modifier) {
                 }
             }
         }
-        Spacer(modifier.width(16.dp))
+        Spacer(Modifier.width(16.dp))
         if (selectedIndex != 0)
             Icon(
                 painter = painterResource(R.drawable.baseline_settings_24),
@@ -175,4 +179,136 @@ fun EncryptedMessageFieldPreview() {
 @Composable
 fun DecryptedMessageFieldPreview() {
     EncryptorDecryptorTheme { DecryptedMessageField() }
+}
+
+@Composable
+fun InputField(modifier: Modifier = Modifier) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        EncryptedMessageField()
+        EncryptionSelector(Modifier.padding(start = 32.dp))
+        DecryptedMessageField()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun InputFieldPreview() {
+    EncryptorDecryptorTheme { InputField() }
+}
+
+@Composable
+fun EncryptorDecryptorHomeScreen(modifier: Modifier = Modifier) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.verticalScroll(rememberScrollState())
+    ) {
+        OptionToggler()
+        Spacer(Modifier.padding(8.dp))
+        InputField()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun EncryptorDecryptorHomeScreenPreview() {
+    EncryptorDecryptorTheme {
+        EncryptorDecryptorHomeScreen()
+    }
+}
+
+@Composable
+fun EncryptorDecryptorApp() {
+    EncryptorDecryptorTheme {
+        Scaffold(bottomBar = { BottomNavigation() }) { padding ->
+            EncryptorDecryptorHomeScreen(
+                Modifier
+                    .padding(padding)
+                    .fillMaxSize()
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun EncryptorDecryptorAppPreview() {
+    EncryptorDecryptorApp()
+
+}
+
+@Composable
+fun BottomNavigation(modifier: Modifier = Modifier) {
+    NavigationBar(
+        modifier = modifier
+    ) {
+        NavigationBarItem(
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = null
+                )
+            },
+            label = {
+                Text(
+                    text = stringResource(R.string.home_label)
+                )
+            },
+            selected = true,
+            onClick = {}
+        )
+        NavigationBarItem(
+            icon = {
+                Icon(
+                    painter = painterResource(R.drawable.baseline_history_24),
+                    contentDescription = null
+                )
+            },
+            label = {
+                Text(
+                    text = stringResource(R.string.history)
+                )
+            },
+            selected = false,
+            onClick = {}
+        )
+    }
+}
+
+@Composable
+fun NavigationRail(modifier: Modifier = Modifier) {
+    androidx.compose.material3.NavigationRail {
+        Column {
+            NavigationRailItem(
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Home,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = stringResource(R.string.home_label)
+                    )
+                },
+                selected = true,
+                onClick = {}
+            )
+            NavigationRailItem(
+                icon = {
+                    Icon(
+                        painter = painterResource(R.drawable.baseline_history_24),
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = stringResource(R.string.history)
+                    )
+                },
+                selected = false,
+                onClick = {}
+            )
+        }
+    }
 }
