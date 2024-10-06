@@ -8,24 +8,26 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -48,17 +50,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            EncryptorDecryptorApp()
+
+            EncryptorDecryptorPotraitApp()
         }
     }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
 }
 
 
@@ -93,7 +88,7 @@ fun OptionTogglerPreview() {
 @Composable
 fun EncryptionSelector(modifier: Modifier = Modifier) {
     var selectedIndex by remember { mutableIntStateOf(1) }
-    val options = listOf("ROT13", "AES", "RAS")
+    val options = listOf("ROT13", "AES", "RSA")
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.padding(8.dp)
@@ -185,7 +180,9 @@ fun DecryptedMessageFieldPreview() {
 fun InputField(modifier: Modifier = Modifier) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         EncryptedMessageField()
+        Spacer(Modifier.padding(4.dp))
         EncryptionSelector(Modifier.padding(start = 32.dp))
+        Spacer(Modifier.padding(4.dp))
         DecryptedMessageField()
     }
 }
@@ -209,6 +206,24 @@ fun EncryptorDecryptorHomeScreen(modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+fun EncryptorDecryptorAppLandscape() {
+    EncryptorDecryptorTheme {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            Row {
+                EncryptorDecryptorNavigationRail()
+                EncryptorDecryptorHomeScreen()
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun EncryptorDecryptorAppLandscapePreview() {
+    EncryptorDecryptorAppLandscape()
+}
+
 @Preview(showBackground = true)
 @Composable
 fun EncryptorDecryptorHomeScreenPreview() {
@@ -218,7 +233,7 @@ fun EncryptorDecryptorHomeScreenPreview() {
 }
 
 @Composable
-fun EncryptorDecryptorApp() {
+fun EncryptorDecryptorPotraitApp() {
     EncryptorDecryptorTheme {
         Scaffold(bottomBar = { BottomNavigation() }) { padding ->
             EncryptorDecryptorHomeScreen(
@@ -233,7 +248,7 @@ fun EncryptorDecryptorApp() {
 @Preview(showBackground = true)
 @Composable
 fun EncryptorDecryptorAppPreview() {
-    EncryptorDecryptorApp()
+    EncryptorDecryptorPotraitApp()
 
 }
 
@@ -276,9 +291,13 @@ fun BottomNavigation(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun NavigationRail(modifier: Modifier = Modifier) {
-    androidx.compose.material3.NavigationRail {
-        Column {
+fun EncryptorDecryptorNavigationRail(modifier: Modifier = Modifier) {
+    NavigationRail {
+        Column(
+            modifier = modifier.fillMaxHeight(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             NavigationRailItem(
                 icon = {
                     Icon(
@@ -294,6 +313,7 @@ fun NavigationRail(modifier: Modifier = Modifier) {
                 selected = true,
                 onClick = {}
             )
+
             NavigationRailItem(
                 icon = {
                     Icon(
@@ -312,3 +332,12 @@ fun NavigationRail(modifier: Modifier = Modifier) {
         }
     }
 }
+
+@Preview
+@Composable
+fun EncryptorDecryptorNavigationRailPreview() {
+    EncryptorDecryptorTheme {
+        EncryptorDecryptorNavigationRail()
+    }
+}
+
