@@ -5,11 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -178,7 +180,8 @@ fun DecryptedMessageFieldPreview() {
 
 @Composable
 fun InputField(modifier: Modifier = Modifier) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier) {
         EncryptedMessageField()
         Spacer(Modifier.padding(4.dp))
         EncryptionSelector(Modifier.padding(start = 32.dp))
@@ -195,14 +198,18 @@ fun InputFieldPreview() {
 
 @Composable
 fun EncryptorDecryptorHomeScreen(modifier: Modifier = Modifier) {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.verticalScroll(rememberScrollState())
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
-        OptionToggler()
-        Spacer(Modifier.padding(8.dp))
-        InputField()
+        OptionToggler(
+            Modifier.align(Alignment.Center)
+                .offset(y = -128.dp)
+        )
+        InputField(Modifier.align(Alignment.Center))
+
+
     }
 }
 
