@@ -16,20 +16,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -39,15 +37,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.encryptordecryptor.R
-import com.example.encryptordecryptor.ui.theme.EncryptorDecryptorTheme
 
 
 @Composable
-fun OptionToggler(modifier: Modifier = Modifier) {
-    var value by remember { mutableStateOf(false) }
+fun OptionToggler(
+    modifier: Modifier = Modifier,
+    optionTogglerState: Boolean,
+    onPress: (Boolean) -> Unit
+) {
+
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -56,21 +56,14 @@ fun OptionToggler(modifier: Modifier = Modifier) {
         Text(
             text = "Encryptor"
         )
-        Switch(checked = value,
-            onCheckedChange = { value = !value })
+        Switch(checked = optionTogglerState,
+            onCheckedChange = { onPress(it) })
         Text(
             text = "Decryptor"
         )
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun OptionTogglerPreview() {
-    EncryptorDecryptorTheme {
-        OptionToggler()
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -101,16 +94,12 @@ fun EncryptionSelector(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun EncryptionSelectorPreview(modifier: Modifier = Modifier) {
-    EncryptorDecryptorTheme { EncryptionSelector() }
-}
 
 @Composable
 fun EncryptedMessageField(modifier: Modifier = Modifier) {
     var text by remember { mutableStateOf("") }
     TextField(value = text,
+        modifier = modifier,
         onValueChange = { text = it },
         leadingIcon = {
             Icon(
@@ -133,6 +122,7 @@ fun EncryptedMessageField(modifier: Modifier = Modifier) {
 fun DecryptedMessageField(modifier: Modifier = Modifier) {
     var text by remember { mutableStateOf("") }
     TextField(value = text,
+        modifier = modifier,
         onValueChange = { text = it },
         leadingIcon = {
             Icon(
@@ -152,22 +142,13 @@ fun DecryptedMessageField(modifier: Modifier = Modifier) {
     )
 }
 
-@Preview(showBackground = true)
-@Composable
-fun EncryptedMessageFieldPreview() {
-    EncryptorDecryptorTheme { EncryptedMessageField() }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DecryptedMessageFieldPreview() {
-    EncryptorDecryptorTheme { DecryptedMessageField() }
-}
 
 @Composable
 fun InputField(modifier: Modifier = Modifier) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
         EncryptedMessageField()
         Spacer(Modifier.padding(4.dp))
         EncryptionSelector(Modifier.padding(start = 32.dp))
@@ -176,73 +157,29 @@ fun InputField(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun InputFieldPreview() {
-    EncryptorDecryptorTheme { InputField() }
-}
 
 @Composable
-fun EncryptorDecryptorHomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    homeScreenModel: HomeScreenModel = HomeScreenModel()
+) {
+    val homeScreenState by homeScreenModel.homeScreenState.collectAsState()
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
         OptionToggler(
-            Modifier.align(Alignment.Center)
-                .offset(y = -128.dp)
+            Modifier
+                .align(Alignment.Center)
+                .offset(y = (-128).dp),
+            optionTogglerState = homeScreenState.optionToggler,
+            onPress = homeScreenModel::onPressingOptionToggler
         )
         InputField(Modifier.align(Alignment.Center))
 
 
     }
-}
-
-@Composable
-fun EncryptorDecryptorAppLandscape() {
-    EncryptorDecryptorTheme {
-        Surface(color = MaterialTheme.colorScheme.background) {
-            Row {
-                EncryptorDecryptorNavigationRail()
-                EncryptorDecryptorHomeScreen()
-            }
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun EncryptorDecryptorAppLandscapePreview() {
-    EncryptorDecryptorAppLandscape()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun EncryptorDecryptorHomeScreenPreview() {
-    EncryptorDecryptorTheme {
-        EncryptorDecryptorHomeScreen()
-    }
-}
-
-@Composable
-fun EncryptorDecryptorPotraitApp() {
-    EncryptorDecryptorTheme {
-        Scaffold(bottomBar = { BottomNavigation() }) { padding ->
-            EncryptorDecryptorHomeScreen(
-                Modifier
-                    .padding(padding)
-                    .fillMaxSize()
-            )
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun EncryptorDecryptorAppPreview() {
-    EncryptorDecryptorPotraitApp()
-
 }
 
 @Composable
@@ -326,10 +263,3 @@ fun EncryptorDecryptorNavigationRail(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview
-@Composable
-fun EncryptorDecryptorNavigationRailPreview() {
-    EncryptorDecryptorTheme {
-        EncryptorDecryptorNavigationRail()
-    }
-}

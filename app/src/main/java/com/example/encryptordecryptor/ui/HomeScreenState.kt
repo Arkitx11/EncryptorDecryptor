@@ -3,7 +3,7 @@ package com.example.encryptordecryptor.ui
 data class HomeScreenState(
     val optionToggler: Boolean = false,
     val userInputMessage: String = "",
-    val mechanism: Mechanism = Mechanism.ROT13,
+    val mechanism: Int = 0,
     val outputMessage: String = ""
 )
 

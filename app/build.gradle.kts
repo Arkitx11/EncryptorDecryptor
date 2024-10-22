@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.encryptordecryptor"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.encryptordecryptor"
@@ -50,6 +50,9 @@ android {
 }
 
 dependencies {
+    implementation("androidx.compose.material3.adaptive:adaptive:1.1.0-alpha05")
+    implementation("androidx.compose.material3.adaptive:adaptive-layout:1.1.0-alpha05")
+    implementation("androidx.compose.material3.adaptive:adaptive-navigation:1.1.0-alpha05")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
