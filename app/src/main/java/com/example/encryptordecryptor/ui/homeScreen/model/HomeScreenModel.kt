@@ -1,6 +1,7 @@
-package com.example.encryptordecryptor.ui
+package com.example.encryptordecryptor.ui.homeScreen.model
 
 import androidx.lifecycle.ViewModel
+import com.example.encryptordecryptor.ui.homeScreen.HomeScreenState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -18,8 +19,6 @@ class HomeScreenModel : ViewModel() {
     val userInputMessage
         get() = _userInputMessage
 
-    val outputMessage
-        get() = _outputMessage
 
     val homeScreenState = _homeScreenState.asStateFlow()
 
@@ -35,4 +34,10 @@ class HomeScreenModel : ViewModel() {
         encryptionSelector = Mechanism.entries[index]
     }
 
+
 }
+
+enum class Mechanism {
+    ROT13, AES, RSA
+}
+

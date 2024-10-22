@@ -14,9 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.window.core.layout.WindowWidthSizeClass
-import com.example.encryptordecryptor.ui.BottomNavigation
-import com.example.encryptordecryptor.ui.EncryptorDecryptorNavigationRail
-import com.example.encryptordecryptor.ui.HomeScreen
+import com.example.encryptordecryptor.ui.homeScreen.BottomNavigation
+import com.example.encryptordecryptor.ui.homeScreen.EncryptorDecryptorNavigationRail
+import com.example.encryptordecryptor.ui.homeScreen.HomeScreen
 import com.example.encryptordecryptor.ui.theme.EncryptorDecryptorTheme
 
 

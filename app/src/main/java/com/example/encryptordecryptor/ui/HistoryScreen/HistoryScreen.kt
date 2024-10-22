@@ -1,4 +1,4 @@
-package com.example.encryptordecryptor.ui
+package com.example.encryptordecryptor.ui.HistoryScreen
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -69,10 +69,14 @@ fun HistoryCard(modifier: Modifier = Modifier) {
                     disabledIndicatorColor = Color.Transparent
                 )
             )
-            Icon(painter = painterResource(R.drawable.baseline_content_copy_24), contentDescription = null)
+            Icon(
+                painter = painterResource(R.drawable.baseline_content_copy_24),
+                contentDescription = null
+            )
             Spacer(Modifier.weight(1f))
-            Icon(Icons.Rounded.ArrowDropDown, contentDescription = null,
-                )
+            Icon(
+                Icons.Rounded.ArrowDropDown, contentDescription = null,
+            )
         }
     }
 }

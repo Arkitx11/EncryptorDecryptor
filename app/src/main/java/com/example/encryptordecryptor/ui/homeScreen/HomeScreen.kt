@@ -1,4 +1,4 @@
-package com.example.encryptordecryptor.ui
+package com.example.encryptordecryptor.ui.homeScreen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,6 +39,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.encryptordecryptor.R
+import com.example.encryptordecryptor.ui.homeScreen.model.HomeScreenModel
 
 
 @Composable
@@ -144,7 +145,11 @@ fun DecryptedMessageField(modifier: Modifier = Modifier) {
 
 
 @Composable
-fun InputField(modifier: Modifier = Modifier) {
+fun InputField(
+    modifier: Modifier = Modifier,
+    homeScreenState: HomeScreenState,
+    homeScreenModel: HomeScreenModel
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -176,7 +181,7 @@ fun HomeScreen(
             optionTogglerState = homeScreenState.optionToggler,
             onPress = homeScreenModel::onPressingOptionToggler
         )
-        InputField(Modifier.align(Alignment.Center))
+        InputField(Modifier.align(Alignment.Center), homeScreenState, homeScreenModel)
 
 
     }
